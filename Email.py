@@ -1,11 +1,10 @@
 #******* Email.py *************
 # Keanan Hinchliffe 
 """
-
+A program which creates the class Email and uses it to allow users to read, 
+delete and write emails. 
 
 """
-
-
 
 class Email():
     """
@@ -23,6 +22,7 @@ content : str
     the content of the email
 inbox : list
     holds multiple emails
+
 
 Methods
 _______
@@ -76,8 +76,13 @@ def populate_inbox():
 def read_email(i,inbox):
     """
     read_emails prints out the information of a chosen email.
-    Parameters: i : int (decides which email from the inbox), 
-                inbox : list (the list of emails)  
+
+    Parameters:     inbox : list 
+                        A list of emails.
+                    i : int 
+                        The index of the email from  the inbox list.
+                     
+    Returns:        
     """
     print("\n\n_________________________________________________________\n")
     print("From :\t\t" + inbox[i].address)
@@ -92,8 +97,12 @@ def read_email(i,inbox):
 
 def list_emails(inbox):
     """
-    list_emails prints the subject lines of all the emails in an inbox
-    Parameters: inbox : list (A list of emails)
+    list_emails prints the subjects and senders of all the emails in an inbox.
+
+    Parameters:     inbox : list 
+                        A list of emails.
+    
+    Returns:
     """
 
     print("\nYour Emails:")
@@ -105,9 +114,11 @@ def list_emails(inbox):
 def check_integer(item): 
     """
     check_integer tries to change an input to an int, if it can't it will
-    ask for input until it can
-    Parameters: item : str
-    Returns the item as an int   
+    ask for input until it can.
+    Parameters:     item : str
+                        A string which may be a number.
+    Returns:         item : int
+                        A user chosen integer.
     """
     while type(item) != int:
         try:
@@ -121,9 +132,16 @@ def check_in_range(item, upper_value, lower_value):
     """
     check_in_range checks if an int is within a given range and will ask
     for a new input until it falls within the range.
-    Parameters: item : int , upper_value : int/float (the highest item can be)
-                lower_value : int/float (the smallest item can be)
-    returns item as an int 
+
+    Parameters:     item : str
+                        A string which should be a number. 
+                    upper_value : int/float 
+                        The highest value which item can be. 
+                    lower_value : int/float 
+                        The lowest value which item can be. 
+
+    Returns:        item : int
+                        A user chosen int between upper_value and lower_value.
     """
     while (check_integer(item) > upper_value or check_integer(item) < 
            lower_value):
@@ -200,9 +218,5 @@ while True:
 
     else: 
         print("This is not a valid input, please input '1', '2' or '3'")
-
-
-
-
 
 
