@@ -1,3 +1,12 @@
+#******* Email.py *************
+# Keanan Hinchliffe 
+"""
+
+
+"""
+
+
+
 class Email():
     """
     A class to represent an Email
@@ -76,7 +85,7 @@ def read_email(i,inbox):
     print("Email:\n\n" + inbox[i].content)
     print("\n_________________________________________________________")
     print("\n\tThis email has now been marked as read!")
-    print("_________________________________________________________")
+    print("_________________________________________________________\n\n")
 
     inbox[i].mark_as_read()
 
@@ -86,10 +95,11 @@ def list_emails(inbox):
     list_emails prints the subject lines of all the emails in an inbox
     Parameters: inbox : list (A list of emails)
     """
+
     print("\nYour Emails:")
 
     for i, inner_list in enumerate(inbox):
-        print(f"{i} : {inbox[i].subject}")
+        print(f"{i+1} : \'{inbox[i].subject}\' from {inbox[i].address}")
 
 
 def check_integer(item): 
@@ -133,6 +143,7 @@ while True:
 2. View unread emails
 3. Quit application: \n""")
     
+
     if menu == "1":
         """
         If the user wishes to read an email, they will be presented with the 
@@ -141,8 +152,10 @@ while True:
         """
         list_emails(inbox)
         choice = input("Please input which email you wish to read:\n")
-        choice = check_in_range(choice, 2, 0)
-        read_email(choice, inbox)
+        choice = check_in_range(choice, len(inbox), 1)
+        index = choice - 1
+        read_email(index, inbox)
+
 
     elif menu == "2":
         """
@@ -152,20 +165,25 @@ while True:
         emails in inbox and printing out those with has_been_read == False
         """
         print("\n\n_____________________________________________________\n")
-        if (inbox[0].has_been_read == True and inbox[1].has_been_read == True
-            and inbox[2].has_been_read == True):
 
-            print("There are no unread messages!")
+        unread_emails = []
+
+        for i, inner_list in enumerate(inbox):
+
+            if inbox[i].has_been_read == False:
+                    unread_emails.append(inbox[i])
+
+
+        if len(unread_emails) == 0: 
+            print("There are no unread emails!")
+
+        else: 
+            print("Unread Emails:")
+
+            list_emails(unread_emails)
+
         
-        else:
-            print("Unread Emails:\n")
-
-            for i, inner_list in enumerate(inbox):
-
-                if inbox[i].has_been_read == False:
-                    print(inbox[i].subject)
-        
-        print("_____________________________________________________")
+        print("_____________________________________________________\n\n")
         
     elif menu == "3":
         print ("Goodbye!")
