@@ -5,6 +5,7 @@ A program which creates the class Email and uses it to allow users to read,
 delete and write emails. 
 
 """
+
 #******** Class Definitions *****************
 class Email():
     """
@@ -71,7 +72,7 @@ def check_yes_no(answer):
                         Either 'yes' or 'no'.       
     """
     while answer.lower() !='yes' and answer.lower() != 'no':
-        answer = input ('\nPlease only put in \'yes\' or \'no\':\n')
+        answer = input('\nPlease only put in \'yes\' or \'no\':\n')
 
     answer = answer.lower()
     return answer
@@ -80,7 +81,12 @@ def check_yes_no(answer):
 def populate_inbox(): 
     """
     populate_inbox creates 3 Email objects and adds them to a list
-    returns list of emails
+    returns list of emails.
+
+    Parameters :
+
+    Returns :      inbox : list
+                        A list of Email objects. 
     
     """
     email1 = Email("examp1@email.com","First", "Here we go!")
@@ -90,18 +96,52 @@ def populate_inbox():
     email1.add_email(email1)
     email1.add_email(email2)
     email1.add_email(email3)
+
+    inbox = email1.get_email()
     
-    return email1.get_email()
+    return inbox
 
 
-def read_email(i,folder, in_or_out):
+def delete_email(folder_index, folder):
+    """
+    delete_email asks the user if they wish to delete the email they just
+    read. If the user does wish to delete the email, then the email will be 
+    removed from the folder. 
+
+    Parameters:     folder_index : int
+                        The index of the email inside the folder list.
+
+                    folder : list
+                        The list of which emails will be deleted from. 
+    
+    Returns :
+    """
+
+    print(dashes + "\n")
+
+    delete_choice = input("Would you like to delete this Email now that" + 
+    " it has been read?\n")
+
+    if check_yes_no(delete_choice) == "yes":
+
+        del folder[folder_index]
+
+        print("\n\nThe email has been deleted from your inbox!")
+
+    print(dashes)
+
+
+    
+
+
+def read_email(folder_index, folder, in_or_out):
     """
     read_emails prints out the information of a chosen email. If the email 
     is from an incoming folder then it will get marked as read, and show the 
-    sender's email address 
+    sender's email address.
 
-    Parameters:     i : int 
-                        The index of the email from  the inbox list.
+    Parameters:     folder_index : int 
+                        The index of the email inside the folder list.
     
                     folder : list 
                         A list of emails.
@@ -112,24 +152,22 @@ def read_email(i,folder, in_or_out):
              
     Returns:        
     """
-    print("\n\n________________________________________________________\n")
+    print("\n\n" + dashes + "\n")
     if in_or_out == "in":
-        print("From :\t\t" + folder[i].address)
+        print("From :\t\t" + folder[folder_index].address)
     else:
-        print("To :\t\t" + folder[i].address)
-    print("Subject :\t" + folder[i].subject)
-    print("Email:\n\n" + folder[i].content)
-    print("\n________________________________________________________")
+        print("To :\t\t" + folder[folder_index].address)
+    print("Subject :\t" + folder[folder_index].subject)
+    print("Email:\n\n" + folder[folder_index].content)
+    print("\n" + dashes)
     
     if in_or_out == "in":
-        folder[i].mark_as_read()
+        folder[folder_index].mark_as_read()
 
         print("\n\tThis email has now been marked as read!")
-        print("________________________________________________________\n\n")
+        print(dashes + "\n\n")
 
         
-
-
 def list_emails(folder):
     """
     list_emails prints the subjects and senders of all the emails in an inbox.
@@ -139,8 +177,6 @@ def list_emails(folder):
     
     Returns:
     """
-
-    print("\nYour Emails:")
 
     for i, inner_list in enumerate(folder):
         print(f"{i+1} : \'{folder[i].subject}\' from {folder[i].address}")
@@ -196,15 +232,20 @@ def choose_email(folder):
     Parameters:     folder : list
                         A list of emails.
     
-    Returns:        index : int
+    Returns:        folder_index : int
                         The index of the chosen email inside folder.  
     """
     list_emails(folder)
+    print(dashes)
     choice = input("\nPlease input which email you wish to read:\n")
     choice = check_in_range(choice, len(folder), 1)
-    index = choice - 1
+    print(dashes)
+    folder_index = choice - 1
     
-    return index
+    return folder_index
+
+
+
 
 
 #********* Main Code *************************
@@ -212,14 +253,21 @@ def choose_email(folder):
 inbox = populate_inbox()
 outbox = []
 
+# dashes will be used to make the output more readable.
+dashes = "_" * 63
+
 while True:
 
-    menu = input("""\n\nPlease choose an action from the following.
+    print("\n\n" + dashes + "\n")
+
+    menu = input("""Please choose an action from the following:
 1. Read an email from your inbox
-2. View unread emails
+2. View unread emails 
 3. Send an email
 4. Read an email from your outbox
-5. Quit application: \n""")
+5. Quit application\n""" + dashes + "\n\n")
+
+    print(dashes)
     
 
     if menu == "1":
@@ -228,9 +276,21 @@ while True:
         subject lines and asked which email they wish to read. Then, the 
         chosen email will be shown to them and marked as read
         """
-        index  = choose_email(inbox)
-        read_email(index, inbox, "in")
+        print("\n\n" + dashes)
 
+        if len(inbox) != 0: 
+
+            print("\nInbox:\n")
+            inbox_index  = choose_email(inbox)
+            read_email(inbox_index, inbox, "in")
+
+            delete_email(inbox_index, inbox)
+
+        else:
+            print("\nYou have no emails in your inbox!")
+            print(dashes)
+
+        
 
     elif menu == "2":
         """
@@ -239,7 +299,6 @@ while True:
         shown the subject lines the unread emails by looping through the
         emails in inbox and printing out those with has_been_read == False
         """
-        print("\n\n_____________________________________________________\n")
 
         unread_emails = []
 
@@ -247,19 +306,24 @@ while True:
 
             if inbox[i].has_been_read == False:
                     unread_emails.append(inbox[i])
-
+        
+        print("\n\n" + dashes +"\n")
 
         if len(unread_emails) == 0: 
             print("There are no unread emails!")
+            print(dashes)
 
         else: 
             print("Unread Emails:")
 
-            list_emails(unread_emails)
+            unread_index = choose_email(unread_emails)
+            read_email(unread_index, unread_emails, "in")
 
-        
-        print("_____________________________________________________\n\n")
-        
+            # In order to delete from the inbox we must first find their 
+            # chosen email in the inbox. 
+            inbox_index = inbox.index(unread_emails[unread_index])
+            delete_email(inbox_index, inbox)
+
 
     elif menu == "3":
         """
@@ -268,41 +332,50 @@ while True:
         if the information is correct the email is added to the outbox, if not
         the information is asked for again."""
 
-        while menu == '3': 
+        while True: 
+
+            print("\n" + dashes)
             address = input("\nRecipient email address:\n")
             subject_line = input("\nSubject line:\n")
             content = input("\nEmail content:\n")
+            print(dashes)
 
             send_email = Email(address, subject_line, content)
             
-            print("\n\n__________________________________________________" + 
-                  "______\n")
+            print("\n\n" + dashes + "\n")
             print("To :\t\t" + send_email.address)
             print("Subject :\t" + send_email.subject)
             print("Email:\n\n" + send_email.content)
-            print("\n________________________________________________________")
-
-            is_correct = input("Is the above information correct?\n")
+            print(dashes)
+            
+            print(dashes)
+            is_correct = input("\nIs the above information correct?\n")
 
             if check_yes_no(is_correct) == "yes":
                 outbox.append(send_email)
+                print("\nYour email has now been added to your Outbox!")
+                print(dashes)
                 break
             
             else:
                 print("\nWe will now ask you to put in the correct "+ 
                       "information.")
+                print(dashes)
                 continue
 
 
     elif menu == "4":
         
         if len(outbox) != 0 : 
-
-            index = choose_email(outbox)
-            read_email(index, outbox, "out")
+            
+            print("\n\n" + dashes)
+            print("\nOutbox:\n")
+            outbox_index = choose_email(outbox)
+            read_email(outbox_index, outbox, "out")
         
         else: 
-            print("\nYou have no outgoing emails yet!\n")
+            print("\n" + dashes + "\n\nYou have no outgoing emails yet!")
+            print(dashes)
 
 
     elif menu == "5":
