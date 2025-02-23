@@ -1,5 +1,10 @@
-Email.py
+# Email.py
 
-This project was used to demonstrate my knowledge of Object-Oriented Programming where I have made an Email class and used it to allow users to read and write emails.
+Welcome to **Email.py**! This project is here to demonstrate my knowledge of Object-Oriented Programming where I have created and Email class and used it to allow users to read and write emails.
 
-In this program users are asked whether they would like to read from their inbox, read specifically unread emails from their inbox, send an email, read an email from their outbox, or quit the application. If the user wishes to read from their inbox they will have the option to delete the email they have just read. 
+## Features
+
+- **Read Incoming And Outgoing Emails** : The user is presented with all the emails in the desired folder, in the format "*Email Subject* from *sender/recipient email*" and asked to choose which email they would like to choose. Once an email from the inbox has been read, the user will be asked if they wish to delete it. 
+- **View Unread Emails** : The user can choose to only be presented with the emails which have not yet been read.
+- **Write An Email** : The user is asked to provide a recipient email address, a subject line and the contents of the email. Then this will be checked with the user to see if the information is correct and then added to the outbox. 
+
